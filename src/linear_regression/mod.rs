@@ -1,5 +1,5 @@
 use crate::matrix::Matrix;
-mod anova;
+pub mod anova;
 use anova::Anova;
 
 pub struct LinearRegressionModel {
@@ -18,7 +18,7 @@ impl LinearRegressionModel {
         }
     }
 
-    /// 线性回归学习
+    /// 线性回归
     /// # params
     /// x: 观测自变量矩阵，输入二维数组\
     /// y: 因变量，输入一维数组
@@ -71,7 +71,7 @@ impl LinearRegressionModel {
         ans.get(0).unwrap().to_vec()
     }
 
-    pub fn r_square(&self) -> f64 {
+    pub fn r_squared(&self) -> f64 {
         self.ssr() / self.sst()
     }
 }
@@ -109,8 +109,6 @@ impl Anova for LinearRegressionModel {
             v.push(1f64);
         }
         let u = Matrix::from_vec(&v);
-        println!("{}", u);
-        println!("{}", self.y);
         self.beta_hat
             .transpose()
             .dot(&self.x.transpose())
@@ -174,6 +172,7 @@ mod tests {
             model.beta_hat.get_column(0).unwrap(),
             vec![-0.20887175, 0.71765667]
         );
-        println!("{}", model.r_square());
+        println!("{}", model.r_squared());
+        assert!(1e-8 > model.r_squared() - 0.975670026211267);
     }
 }

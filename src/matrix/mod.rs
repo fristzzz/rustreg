@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Matrix {
     elems: Vec<f64>,
     pub row_num: usize,
